@@ -1,0 +1,9 @@
+server:
+ port: 8999
+spring.security.user.name : Yassine
+spring.security.user.password : 123
+
+jwt : 
+ secret : Y@ss1ne***123
+ expiration : 604800
+ header : Authorization
