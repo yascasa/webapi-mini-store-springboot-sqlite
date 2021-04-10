@@ -26,6 +26,9 @@ public class UserMapper {
 			vo.setEmail(user.getUserEmail());
 			vo.setUserName(user.getUserName());
 			vo.setAddress(user.getUserAddress());
+			if(user.getIsAdmin()) {
+				vo.setAdmin(true);
+			}
 			return  vo;
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -13,5 +13,6 @@ public class UserVO {
 	    private String userName;
 	    private String address;
 	    private String token;
+	    private boolean isAdmin = false;
 }
 
