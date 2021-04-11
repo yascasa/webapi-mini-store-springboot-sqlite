@@ -17,7 +17,7 @@ public class FirstTimeInitializer implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// CHECK IF THERE NO USERS TO ADD ADMIN
 		if( Utility.IterableCount(this.userService.findAll()) == 0) {
-			AppUser u = new AppUser("zemraniyassine@gmail.com", "admin", "admin",true);
+			AppUser u = new AppUser("admin@gmail.com", "admin", "admin",true);
 			this.userService.save(u);
 		}	
 	}

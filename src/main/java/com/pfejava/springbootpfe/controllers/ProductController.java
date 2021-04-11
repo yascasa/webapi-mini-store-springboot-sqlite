@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,7 @@ import com.pfejava.springbootpfe.vo.ProductVO;
 
 @RestController
 @RequestMapping("/public/products")
+@CrossOrigin
 public class ProductController {
 
 	@Autowired()
@@ -78,20 +80,21 @@ public class ProductController {
 		}
 	}
 
-
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST, produces = "application/json")
 	public HttpEntity<?> save(@RequestBody ProductVO product) {
 		try {
 			Product productBO = ProductMapper.ProductVoToBo(product);
-			this.productService.save(productBO);
+			Product pCreated  = this.productService.save(productBO);
+			ProductPicture pt = new ProductPicture(null, product.getPictures().get(0), pCreated.getProductID());
+			this.productPictureService.save(pt);
 			return new ResponseEntity<Object>(product, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@RequestMapping(value = { "", "/" }, method = RequestMethod.DELETE, produces = "application/json")
-	public HttpEntity<?> delete(@RequestBody Long id) {
+
+	@RequestMapping(value = { "/{id}", "/{id}/" }, method = RequestMethod.DELETE, produces = "application/json")
+	public HttpEntity<?> delete(Long id) {
 		try {
 			this.productService.delete(id);
 			return new ResponseEntity<Object>(HttpStatus.OK);
