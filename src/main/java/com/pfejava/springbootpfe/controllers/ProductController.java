@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,11 +78,25 @@ public class ProductController {
 		}
 	}
 
-//	public ProductPictureVO getProductPictureById(Long id) {
-//		Optional<ProductPicture> producttype = productPictureService.findById(id);
-//		if (producttype.isPresent()) {
-//			return ProductPictureMapper.ProductPictureBoToVo(producttype.get());
-//		}
-//		return null;
-//	}
+
+	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST, produces = "application/json")
+	public HttpEntity<?> save(@RequestBody ProductVO product) {
+		try {
+			Product productBO = ProductMapper.ProductVoToBo(product);
+			this.productService.save(productBO);
+			return new ResponseEntity<Object>(product, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = { "", "/" }, method = RequestMethod.DELETE, produces = "application/json")
+	public HttpEntity<?> delete(@RequestBody Long id) {
+		try {
+			this.productService.delete(id);
+			return new ResponseEntity<Object>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
